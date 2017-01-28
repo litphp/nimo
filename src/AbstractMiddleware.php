@@ -31,7 +31,18 @@ abstract class AbstractMiddleware implements IMiddleware
         $this->response = $response;
         $this->next = $next ?: [NimoUtility::class, 'noopNext'];
 
-        return $this->main();
+        $this->beforeMain();
+        $response = $this->main();
+        if (!$response instanceof ResponseInterface) {
+            throw new \Exception(static::class . '::main() should return psr Response');
+        }
+
+        return $response;
+    }
+
+    protected function beforeMain()
+    {
+
     }
 
     /**
