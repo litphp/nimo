@@ -13,7 +13,7 @@ trait MiddlewareTrait
      * @param $middleware
      * @return MiddlewareStack
      */
-    public function append($middleware)
+    public function append($middleware): MiddlewareStack
     {
         $stack = new MiddlewareStack();
 
@@ -28,7 +28,7 @@ trait MiddlewareTrait
      * @param $middleware
      * @return MiddlewareStack
      */
-    public function prepend($middleware)
+    public function prepend($middleware): MiddlewareStack
     {
         $stack = new MiddlewareStack();
 
@@ -43,7 +43,7 @@ trait MiddlewareTrait
      * @param callable $conditionCallback ($req, $res, $next)
      * @return ConditionMiddleware
      */
-    public function when(callable $conditionCallback)
+    public function when(callable $conditionCallback): MiddlewareInterface
     {
         return new ConditionMiddleware($conditionCallback, $this);
     }

@@ -36,7 +36,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
      */
     abstract protected function main(): ResponseInterface;
 
-    protected function delegate(ServerRequestInterface $request = null)
+    protected function delegate(ServerRequestInterface $request = null): ResponseInterface
     {
         return $this->handler->handle($request ?: $this->request);
     }

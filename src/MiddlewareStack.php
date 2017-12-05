@@ -38,7 +38,7 @@ class MiddlewareStack extends AbstractMiddleware
      * @param mixed $middleware
      * @return $this
      */
-    public function append($middleware)
+    public function append($middleware): MiddlewareStack
     {
         $this->stack[] = CallableMiddleware::wrap($middleware);
         return $this;
@@ -52,7 +52,7 @@ class MiddlewareStack extends AbstractMiddleware
      * @param $middleware
      * @return $this
      */
-    public function prepend($middleware)
+    public function prepend($middleware): MiddlewareStack
     {
         array_unshift($this->stack, CallableMiddleware::wrap($middleware));
         return $this;
@@ -69,7 +69,7 @@ class MiddlewareStack extends AbstractMiddleware
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    protected function loop(ServerRequestInterface $request)
+    protected function loop(ServerRequestInterface $request): ResponseInterface
     {
         if (!isset($this->stack[$this->index])) {
             return $this->delegate($request);
