@@ -13,12 +13,9 @@ build:
     tests:
         override:
             -
-                command: 'phpunit --coverage-clover=clover.xml -c .'
+                command: 'vendor/bin/phpunit --coverage-clover=clover.xml -c .'
                 coverage:
                     file: 'clover.xml'
                     format: 'php-clover'
     environment:
         php: 7.1
-    dependencies:
-        before:
-            - composer install -n --dev
