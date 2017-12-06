@@ -1,6 +1,7 @@
 <?php namespace Nimo;
 
 use Interop\Http\Server\RequestHandlerInterface;
+use Nimo\Traits\HandlerTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

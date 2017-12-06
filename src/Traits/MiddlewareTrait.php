@@ -1,11 +1,13 @@
-<?php namespace Nimo;
+<?php namespace Nimo\Traits;
 
 use Interop\Http\Server\MiddlewareInterface;
+use Nimo\MiddlewarePipe;
 use Nimo\Middlewares\CatchMiddleware;
 use Nimo\Middlewares\ConditionMiddleware;
 
 trait MiddlewareTrait
 {
+    use AttachToRequestTrait;
 
     /**
      * append $middleware after this one, return the new $middlewareStack
