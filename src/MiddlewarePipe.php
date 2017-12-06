@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * User: mcfog
  * Date: 15/9/4
  */
-class MiddlewareStack extends AbstractMiddleware
+class MiddlewarePipe extends AbstractMiddleware
 {
     /**
      * @var CallableHandler
@@ -38,7 +38,7 @@ class MiddlewareStack extends AbstractMiddleware
      * @param mixed $middleware
      * @return $this
      */
-    public function append($middleware): MiddlewareStack
+    public function append($middleware): MiddlewarePipe
     {
         $this->stack[] = CallableMiddleware::wrap($middleware);
         return $this;
@@ -52,7 +52,7 @@ class MiddlewareStack extends AbstractMiddleware
      * @param $middleware
      * @return $this
      */
-    public function prepend($middleware): MiddlewareStack
+    public function prepend($middleware): MiddlewarePipe
     {
         array_unshift($this->stack, CallableMiddleware::wrap($middleware));
         return $this;

@@ -1,16 +1,16 @@
 <?php namespace Nimo\Tests;
 
-use Nimo\MiddlewareStack;
+use Nimo\MiddlewarePipe;
 
 /**
  * User: mcfog
  * Date: 15/9/12
  */
-class MiddlewareStackTest extends NimoTestCase
+class MiddlewarePipeTest extends NimoTestCase
 {
     public function testEmptyStack()
     {
-        $stack = new MiddlewareStack();
+        $stack = new MiddlewarePipe();
         $answerRes = $this->getResponseMock();
         $request = $this->getRequestMock();
 
@@ -21,7 +21,7 @@ class MiddlewareStackTest extends NimoTestCase
 
     public function testAppend()
     {
-        $stack = new MiddlewareStack();
+        $stack = new MiddlewarePipe();
         $request = $this->getRequestMock();
         $request2 = $this->getRequestMock();
         $request3 = $this->getRequestMock();
@@ -40,7 +40,7 @@ class MiddlewareStackTest extends NimoTestCase
 
     public function testPrepend()
     {
-        $stack = new MiddlewareStack();
+        $stack = new MiddlewarePipe();
         $request = $this->getRequestMock();
         $request2 = $this->getRequestMock();
         $request3 = $this->getRequestMock();

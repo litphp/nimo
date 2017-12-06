@@ -11,11 +11,11 @@ trait MiddlewareTrait
      * append $middleware after this one, return the new $middlewareStack
      *
      * @param $middleware
-     * @return MiddlewareStack
+     * @return MiddlewarePipe
      */
-    public function append($middleware): MiddlewareStack
+    public function append($middleware): MiddlewarePipe
     {
-        $stack = new MiddlewareStack();
+        $stack = new MiddlewarePipe();
 
         return $stack
             ->append($this)
@@ -26,11 +26,11 @@ trait MiddlewareTrait
      * prepend $middleware before this one, return the new $middlewareStack
      *
      * @param $middleware
-     * @return MiddlewareStack
+     * @return MiddlewarePipe
      */
-    public function prepend($middleware): MiddlewareStack
+    public function prepend($middleware): MiddlewarePipe
     {
-        $stack = new MiddlewareStack();
+        $stack = new MiddlewarePipe();
 
         return $stack
             ->prepend($this)
