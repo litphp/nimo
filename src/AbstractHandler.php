@@ -8,6 +8,9 @@ abstract class AbstractHandler implements RequestHandlerInterface
 {
     use HandlerTrait;
 
+    /**
+     * @var ServerRequestInterface
+     */
     protected $request;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
