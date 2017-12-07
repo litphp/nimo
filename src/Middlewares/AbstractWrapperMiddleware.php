@@ -14,8 +14,8 @@ abstract class AbstractWrapperMiddleware extends AbstractMiddleware
      */
     protected $innerMiddleware;
 
-    public function __construct($innerMiddleware)
+    public function __construct(MiddlewareInterface $innerMiddleware)
     {
-        $this->innerMiddleware = CallableMiddleware::wrap($innerMiddleware);
+        $this->innerMiddleware = $innerMiddleware;
     }
 }

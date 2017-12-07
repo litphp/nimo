@@ -6,8 +6,10 @@
  */
 
 use Interop\Http\Server\RequestHandlerInterface;
+use Nimo\AbstractHandler;
+use Nimo\AbstractMiddleware;
 use Nimo\Handlers\CallableHandler;
-use Nimo\Middlewares\CallableMiddleware;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -39,23 +41,37 @@ abstract class NimoTestCase extends TestCase
 
     protected function assertedHandler(ServerRequestInterface $expectedRequest, ResponseInterface $response)
     {
-        return CallableHandler::wrap(function (ServerRequestInterface $request) use ($expectedRequest, $response) {
-            self::assertSame($expectedRequest, $request);
-            return $response;
-        });
+        return new class($expectedRequest, $response) extends AbstractHandler
+        {
+            use RememberConstructorParamTrait;
+
+            protected function main(): ResponseInterface
+            {
+                /** @noinspection PhpUndefinedFieldInspection */
+                list($expectedRequest, $response) = $this->params;
+                Assert::assertSame($expectedRequest, $this->request);
+                return $response;
+            }
+        };
+
     }
 
     protected function assertedNoopMiddleware(
         ServerRequestInterface $expectedRequest,
         ServerRequestInterface $passedRequest = null
     ) {
-        $middleware = function (ServerRequestInterface $request, RequestHandlerInterface $handler)
-        use ($expectedRequest, $passedRequest) {
-            self::assertSame($expectedRequest, $request);
-            return $handler->handle($passedRequest ?: $request);
-        };
+        return new class($expectedRequest, $passedRequest) extends AbstractMiddleware
+        {
+            use RememberConstructorParamTrait;
 
-        return CallableMiddleware::wrap($middleware);
+            protected function main(): ResponseInterface
+            {
+                /** @noinspection PhpUndefinedFieldInspection */
+                list($expectedRequest, $passedRequest) = $this->params;
+                Assert::assertSame($expectedRequest, $this->request);
+                return $this->delegate($passedRequest);
+            }
+        };
     }
 
     protected function assertedMiddleware(
@@ -63,16 +79,19 @@ abstract class NimoTestCase extends TestCase
         RequestHandlerInterface $expectedHandler,
         ResponseInterface $response
     ) {
-        $middleware = function (ServerRequestInterface $request, RequestHandlerInterface $handler)
-        use (
-            $expectedRequest,
-            $expectedHandler,
-            $response
-        ) {
-            self::assertSame($expectedRequest, $request);
-            self::assertSame($expectedHandler, $handler);
-            return $response;
+        return new class($expectedRequest, $expectedHandler, $response) extends AbstractMiddleware
+        {
+            use RememberConstructorParamTrait;
+
+            protected function main(): ResponseInterface
+            {
+                /** @noinspection PhpUndefinedFieldInspection */
+                list($expectedRequest, $expectedHandler, $response) = $this->params;
+                Assert::assertSame($expectedRequest, $this->request);
+                Assert::assertSame($expectedHandler, $this->handler);
+                return $response;
+            }
         };
-        return CallableMiddleware::wrap($middleware);
+
     }
 }

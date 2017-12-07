@@ -15,7 +15,7 @@ trait MiddlewareTrait
      * @param $middleware
      * @return MiddlewarePipe
      */
-    public function append($middleware): MiddlewarePipe
+    public function append(MiddlewareInterface $middleware): MiddlewarePipe
     {
         $stack = new MiddlewarePipe();
 
@@ -30,7 +30,7 @@ trait MiddlewareTrait
      * @param $middleware
      * @return MiddlewarePipe
      */
-    public function prepend($middleware): MiddlewarePipe
+    public function prepend(MiddlewareInterface $middleware): MiddlewarePipe
     {
         $stack = new MiddlewarePipe();
 

@@ -2,7 +2,6 @@
 
 use Interop\Http\Server\MiddlewareInterface;
 use Nimo\Handlers\CallableHandler;
-use Nimo\Middlewares\CallableMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -35,12 +34,12 @@ class MiddlewarePipe extends AbstractMiddleware
      * return $this
      * note this method would modify $this
      *
-     * @param mixed $middleware
+     * @param MiddlewareInterface $middleware
      * @return $this
      */
-    public function append($middleware): MiddlewarePipe
+    public function append(MiddlewareInterface $middleware): MiddlewarePipe
     {
-        $this->stack[] = CallableMiddleware::wrap($middleware);
+        $this->stack[] = $middleware;
         return $this;
     }
 
@@ -49,12 +48,12 @@ class MiddlewarePipe extends AbstractMiddleware
      * return $this
      * note this method would modify $this
      *
-     * @param $middleware
+     * @param MiddlewareInterface $middleware
      * @return $this
      */
-    public function prepend($middleware): MiddlewarePipe
+    public function prepend(MiddlewareInterface $middleware): MiddlewarePipe
     {
-        array_unshift($this->stack, CallableMiddleware::wrap($middleware));
+        array_unshift($this->stack, $middleware);
         return $this;
     }
 
