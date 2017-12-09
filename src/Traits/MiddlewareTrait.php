@@ -7,7 +7,7 @@ namespace Nimo\Traits;
 use Interop\Http\Server\MiddlewareInterface;
 use Nimo\MiddlewarePipe;
 use Nimo\Middlewares\CatchMiddleware;
-use Nimo\Middlewares\ConditionMiddleware;
+use Nimo\Middlewares\AbstractConditionMiddleware;
 
 trait MiddlewareTrait
 {
@@ -47,11 +47,11 @@ trait MiddlewareTrait
      * wrap this middleware with $conditionCallback (skip this when the callback return falsy value)
      *
      * @param callable $conditionCallback ($req, $res, $next)
-     * @return ConditionMiddleware
+     * @return AbstractConditionMiddleware
      */
     public function when(callable $conditionCallback): MiddlewareInterface
     {
-        return new ConditionMiddleware($conditionCallback, $this);
+        return new AbstractConditionMiddleware($conditionCallback, $this);
     }
 
     public function catch(callable $catcher, string $catchClass = \Throwable::class): MiddlewareInterface

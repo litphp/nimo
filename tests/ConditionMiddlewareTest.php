@@ -5,9 +5,11 @@
  * Date: 15/9/13
  */
 
+use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 use Nimo\AbstractMiddleware;
-use Nimo\Middlewares\ConditionMiddleware;
+use Nimo\Middlewares\AbstractConditionMiddleware;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -21,17 +23,24 @@ class ConditionMiddlewareTest extends NimoTestCase
         $response = $this->getResponseMock();
         $handler = $this->assertedHandler($request, $response);
 
-        $condition = function (
-            ServerRequestInterface $req,
-            RequestHandlerInterface $hdl
-        ) use ($request, $handler) {
-            $this->assertSame($request, $req);
-            $this->assertSame($handler, $hdl);
+        $middleware = new class($inner->reveal(), $request, $handler) extends AbstractConditionMiddleware
+        {
+            protected $params;
 
-            return false;
+            public function __construct(MiddlewareInterface $innerMiddleware, $request, $handler)
+            {
+                parent::__construct($innerMiddleware);
+                $this->params = [$request, $handler];
+            }
+
+            public function shouldRun(ServerRequestInterface $request, RequestHandlerInterface $handler): bool
+            {
+                [$request, $handler] = $this->params;
+                Assert::assertSame($request, $this->request);
+                Assert::assertSame($handler, $this->handler);
+                return false;
+            }
         };
-
-        $middleware = new ConditionMiddleware($condition, $inner->reveal());
 
 
         $returnValue = $middleware->process(
@@ -49,11 +58,24 @@ class ConditionMiddlewareTest extends NimoTestCase
         $expectedHandler = $this->throwHandler();
         $inner = $this->assertedMiddleware($request, $expectedHandler, $answerRes);
 
-        $condition = function () {
-            return true;
-        };
-        $middleware = new ConditionMiddleware($condition, $inner);
+        $middleware = new class($inner, $request, $expectedHandler) extends AbstractConditionMiddleware
+        {
+            protected $params;
 
+            public function __construct(MiddlewareInterface $innerMiddleware, $request, $handler)
+            {
+                parent::__construct($innerMiddleware);
+                $this->params = [$request, $handler];
+            }
+
+            public function shouldRun(ServerRequestInterface $request, RequestHandlerInterface $handler): bool
+            {
+                [$request, $handler] = $this->params;
+                Assert::assertSame($request, $this->request);
+                Assert::assertSame($handler, $this->handler);
+                return true;
+            }
+        };
 
         $returnValue = $middleware->process(
             $request,
