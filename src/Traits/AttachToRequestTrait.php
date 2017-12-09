@@ -1,4 +1,8 @@
-<?php namespace Nimo\Traits;
+<?php
+
+declare(strict_types=1);
+
+namespace Nimo\Traits;
 
 use Psr\Http\Message\ServerRequestInterface;
 

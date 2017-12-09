@@ -1,4 +1,8 @@
-<?php namespace Nimo\Handlers;
+<?php
+
+declare(strict_types=1);
+
+namespace Nimo\Handlers;
 
 use Interop\Http\Server\RequestHandlerInterface;
 use Nimo\AbstractHandler;

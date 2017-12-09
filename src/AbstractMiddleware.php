@@ -1,4 +1,8 @@
-<?php namespace Nimo;
+<?php
+
+declare(strict_types=1);
+
+namespace Nimo;
 
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;

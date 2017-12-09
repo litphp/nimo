@@ -1,4 +1,8 @@
-<?php namespace Nimo\Middlewares;
+<?php
+
+declare(strict_types=1);
+
+namespace Nimo\Middlewares;
 
 use Interop\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
