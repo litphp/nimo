@@ -13,7 +13,7 @@ class FixedResponseHandlerTest extends NimoTestCase
     {
         $answerRes = $this->getResponseMock();
         /** @noinspection PhpParamsInspection */
-        $handler = new FixedResponseHandler($answerRes);
+        $handler = FixedResponseHandler::wrap($answerRes);
 
         $returnValue = $handler->handle(
             $this->getRequestMock()
