@@ -16,7 +16,7 @@ abstract class AbstractConditionMiddleware extends AbstractWrapperMiddleware
 {
     protected function main(): ResponseInterface
     {
-        if ($this->invokeCallback([$this, 'shouldRun'])) {
+        if ($this->shouldRun($this->request, $this->handler)) {
             $response = $this->innerMiddleware->process($this->request, $this->handler);
         } else {
             $response = $this->delegate();
