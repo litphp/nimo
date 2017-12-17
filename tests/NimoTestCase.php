@@ -92,6 +92,25 @@ abstract class NimoTestCase extends TestCase
                 return $response;
             }
         };
+    }
 
+    protected function throwMiddleware(
+        ServerRequestInterface $expectedRequest,
+        RequestHandlerInterface $expectedHandler,
+        \Throwable $throwable
+    ) {
+        return new class($expectedRequest, $expectedHandler, $throwable) extends AbstractMiddleware
+        {
+            use RememberConstructorParamTrait;
+
+            protected function main(): ResponseInterface
+            {
+                /** @noinspection PhpUndefinedFieldInspection */
+                list($expectedRequest, $expectedHandler, $throwable) = $this->params;
+                Assert::assertSame($expectedRequest, $this->request);
+                Assert::assertSame($expectedHandler, $this->handler);
+                throw $throwable;
+            }
+        };
     }
 }
