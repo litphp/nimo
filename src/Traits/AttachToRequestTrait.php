@@ -12,7 +12,7 @@ trait AttachToRequestTrait
      * @param ServerRequestInterface $request
      * @return static
      */
-    public static function fromRequest(ServerRequestInterface $request): self
+    public static function fromRequest(ServerRequestInterface $request)
     {
         /** @noinspection PhpUndefinedClassConstantInspection */
         $key = defined('static::ATTR_KEY') ? static::ATTR_KEY : static::class;
