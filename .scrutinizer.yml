@@ -8,7 +8,7 @@ tools:
             standard: "PSR2"
 filter:
     excluded_paths:
-        - tests/*
+        - Tests/*
 build:
     tests:
         override:
