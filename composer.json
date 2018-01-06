@@ -19,13 +19,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "Nimo\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Nimo\\Tests\\": "tests/"
-        }
+            "Nimo\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "require": {
         "http-interop/http-server-handler": "^1.0",
